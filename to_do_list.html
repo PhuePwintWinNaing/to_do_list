@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TO DO LIST Project</title>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Lobster&family=Sansita+Swashed:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href=" https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
+    <style>
+        
+        h2{
+            text-align: center;
+            font-size:25px;
+        }
+        .toDoList{
+            width: 400px;
+            height: 180px;
+            border:1px solid #e6c073;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            border-bottom-right-radius: 10px;
+            border-bottom-left-radius: 10px;
+            position:absolute;
+            top:50%;
+            left:50%;
+            transform:translate(-50%,-50%);
+            background-color:#e6c073;
+            
+        }
+        body{
+            font-family: 'Sansita Swashed', cursive;
+            font-weight: 700;
+            font-size:20px;
+            background-image: url("img/5.jpg");
+            
+        }
+        .list-box{
+            border:2px solid #000;
+            border-radius:20px;
+            background-color: #fffeb8;
+            margin-top:15px;
+            width:400px;
+            height:380px;
+
+
+        }
+        .input_text{
+            margin:15px;
+            padding:15px 20px;
+            border-radius:20px;
+            width:230px;
+            background-color: #fffeb8;
+            outline:none;
+        }
+
+        ::placeholder {
+            color:gray;
+            opacity: 1; 
+            font-size: 15px;
+            font-family: 'Sansita Swashed', cursive;
+            font-weight: 400;
+            
+        }
+
+        .btn{
+            padding:10px 15px;
+            border-radius:100%;
+            outline:none ;
+            
+        }
+        .btn-add{
+            background-color:  #fffeb8;
+            border-radius:100%;
+            float:right;
+            margin:15px;
+           
+
+        }
+        .btn-del{
+            background-color:#d72323 ;
+            display:inline;
+            margin-right:10px;
+        
+        }
+        .btn-edit{
+            background-color: #eac100;
+            margin-bottom:10px;
+           
+            
+        }
+        li{
+            list-style-type: none;
+        }
+        ul{
+            padding-inline-start: 30px;
+        }
+        .my-text{
+            float:left;
+            border:1px solid #fffeb8;
+            border-radius:20px;
+            width:200px;
+            height:30px;
+            background-color:#e6c073;
+            padding-bottom:5px;
+            margin-right:30px;
+            margin-bottom:10px;
+            text-indent: 10px;
+
+        }
+    </style>
+
+</head>
+<body>
+    
+    <div class="toDoList">
+        <h2>TO DO LIST</h2>
+        <div class="add-box" id="addBox">
+            <input type="text" class="input_text" id="input" placeholder="write down your daily tasks">
+            <button id="addBtn" class="btn btn-add" onclick="addText()"><i class="fas fa-plus fa-2x"></i></button>
+        </div>
+        
+       <div class="list-box">
+        <ul id="list">
+           
+        </ul> 
+       </div>
+            
+        </div>
+
+    <script>
+        let i =1;
+        let minTextLength = 3;
+        let input = document.getElementById("input");
+        let list = document.getElementById("list");
+
+    
+        function textFilter(x){
+            if(x){
+
+                if(x.length >= minTextLength){
+                   
+                    return x;
+                
+                }else{
+                    alert("Min length is 3");
+                    return false;
+                }
+
+            }else{
+                alert("Input is empty");
+                return false;
+            }
+        }
+
+    function showList(text){
+        list.innerHTML += `
+        <li class="list-item" id="list${i}">
+            <button class="btn btn-del" onclick="deleteList(${i})"><i class="far fa-trash-alt fa-1x"></i></button>
+            <button class="btn btn-edit" onclick="editList(${i})"><i class="far fa-edit fa-1x"></i></button>
+            <span id="listText${i}" class="my-text">${text}</span>
+        </li>`;
+        i++;
+    }
+
+    function deleteList(listId){
+        let current = document.getElementById(`list${listId}`);
+        let currentText = document.getElementById(`listText${listId}`).innerHTML;
+        let deleteConfirm = confirm(`Are You Sure To Delete "${currentText}"`);
+        if(deleteConfirm){
+        list.removeChild(current);
+        }else{
+            console.log("delete cancel");
+        }
+    }
+
+    function editList(listId){
+        let current = document.getElementById(`listText${listId}`);
+        let newText = prompt("Say Something",current.innerHTML);
+
+        if(textFilter(newText)){
+        current.innerHTML = newText;
+        }
+    }
+
+        function addText(){
+            //get state
+            let inputText = textFilter(input.value);
+            
+            if(inputText){
+                //set state
+             showList(inputText);
+            input.value = "";
+            }
+        }
+    </script>
+</body>
+</html>
